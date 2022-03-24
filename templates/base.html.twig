@@ -1,18 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="description" content="Site de formation à l'éco-conception web">
+        <title>{% block title %}EcoIT{% endblock %}</title>
         {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
 
 
     </head>
     <body>
-    {% include 'templates/base/nav.html.twig'%}
+        <div class="fixed-top">
+            {% include 'base/header.html.twig'%}
+            {% include 'base/nav.html.twig'%}
+        </div>
 
-    <h1>Bonjour Philippe</h1>
-        {% block body %}{% endblock %}
+        <div class="p-5">
+{#            {% include 'base/content.html.twig'%}#}
+
+            {% block body %}{% endblock %}
+        </div>
         {% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
     </body>
+
+
+
+
 </html>
