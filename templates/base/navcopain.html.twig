@@ -1,0 +1,89 @@
+
+{#nav de vikingsurfer#}
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">ECO - IT LOGO</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('app_home') }}">Accueil</a>
+                </li>
+                <!-- TODO: Create right path for Dashboard Roles -->
+                <li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a class="nav-link" href="{{ path('app_admin') }}">Administration</a>
+                    {% elseif is_granted('ROLE_INSTRUCTOR') %}
+                        <a class="nav-link" href="{{ path('app_instructor') }}">Mes cours</a>
+                    {% elseif is_granted('ROLE_USER') %}
+                        <a class="nav-link" href="{{ path('app_user') }}">Mon compte</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                        <div class="d-flex flex-column flex-lg-row">
+                            <p class="nav-link mb-0">Connecté en tant que {{ app.user.firstname }}</p>
+                            <a class="nav-link" href="{{ path('app_logout') }}">Déconnnexion</a>
+                        </div>
+                    {% else %}
+                        <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion - ECO IT{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="login-form bg-light mt-4 p-4">
+                <form method="post" class="row g-3">
+                    <h1 class="h3 mb-3 font-weight-normal">Connectez-vous</h1>
+
+                    <div class="col-12">
+                        <label for="inputEmail">Email</label>
+                        <input type="email" name="email" id="inputEmail" class="form-control" value="{{ last_username }}" required autofocus>
+                    </div>
+                    <div class="col-12">
+                        <label for="inputPassword">Mot de passe</label>
+                        <input type="password" name="password" id="inputPassword" class="form-control" required>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <label>
+                            <input type="checkbox" name="_remember_me" class="form-check-input">
+                            Se souvenir de moi
+                        </label>
+                    </div>
+
+                    <div class="col-12">
+                        <button class="btn btn-lg btn-primary float-end" type="submit">
+                            Se connecter
+                        </button>
+                    </div>
+
+                    {% if error %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </div>
+                    {% endif %}
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
